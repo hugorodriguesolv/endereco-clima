@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "EnderecoClima.Core": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

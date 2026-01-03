@@ -1,0 +1,6 @@
+services:
+  enderecoclima.webapi:
+    image: ${DOCKER_REGISTRY-}enderecoclimawebapi
+    build:
+      context: .
+      dockerfile: src/EnderecoClima.WebApi/Dockerfile
