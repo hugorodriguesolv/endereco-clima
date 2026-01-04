@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/EnderecoClima.Core/EnderecoClima.Core.csproj" Id="6ef41019-9545-456b-b5f4-4ce97ca10839" />
+    <Project Path="src/EnderecoClima.Infrastructure/EnderecoClima.Infrastructure.csproj" Id="fd72191e-a1e9-4ed9-a52f-943af5f7d39b" />
+    <Project Path="src/EnderecoClima.WebApi/EnderecoClima.WebApi.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/EnderecoClima.UnitTests/EnderecoClima.UnitTests.csproj" Id="af2c8cde-0b9b-4e4e-b5da-41c3685ea4d0" />
+  </Folder>
+  <Folder Name="/_aspire/">
+    <Project Path="src/EnderecoClima.AppHost/EnderecoClima.AppHost.csproj" />
+    <Project Path="src/EnderecoClima.ServiceDefaults/EnderecoClima.ServiceDefaults.csproj" />
+  </Folder>
+  <Project Path="docker-compose.dcproj">
+    <Build />
+  </Project>
+</Solution>
