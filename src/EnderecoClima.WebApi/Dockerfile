@@ -13,6 +13,8 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/EnderecoClima.WebApi/EnderecoClima.WebApi.csproj", "src/EnderecoClima.WebApi/"]
+COPY ["src/EnderecoClima.Infrastructure/EnderecoClima.Infrastructure.csproj", "src/EnderecoClima.Infrastructure/"]
+COPY ["src/EnderecoClima.Core/EnderecoClima.Core.csproj", "src/EnderecoClima.Core/"]
 COPY ["src/EnderecoClima.ServiceDefaults/EnderecoClima.ServiceDefaults.csproj", "src/EnderecoClima.ServiceDefaults/"]
 RUN dotnet restore "./src/EnderecoClima.WebApi/EnderecoClima.WebApi.csproj"
 COPY . .

@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EnderecoClima.Infrastructure\EnderecoClima.Infrastructure.csproj" />
     <ProjectReference Include="..\EnderecoClima.ServiceDefaults\EnderecoClima.ServiceDefaults.csproj" />
   </ItemGroup>
 
