@@ -19,6 +19,8 @@ public sealed partial class ZipCodesController : ControllerBase
         var cep = ZipCode.Create(zipCode);
 
         var result = await _service.LookupAsync(cep.Value, ct);
+        if (result is null) return NotFound();
+
         return Ok(result.ToGetResponse());
     }
 }

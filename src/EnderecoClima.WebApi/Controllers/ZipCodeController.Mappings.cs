@@ -1,10 +1,10 @@
-﻿using EnderecoClima.WebApi.Services.ZipCodes;
+﻿using EnderecoClima.Infrastructure.Providers.BrasilApi.Dtos;
 
 namespace EnderecoClima.WebApi.Controllers;
 
 public static class ZipCodesMappings
 {
-    public static ZipCodesController.AdressDto ToGetResponse(this ZipCodeLookupResult result)
+    public static ZipCodesController.AdressDto ToGetResponse(this ZipCodeLookupDto result)
       => new(
         ZipCode: result.ZipCode,
         Street: result.Street,
