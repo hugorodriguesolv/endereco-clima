@@ -13,8 +13,8 @@ public sealed partial class ZipCodesController : ControllerBase
     public ZipCodesController(IZipCodeLookupService service) => _service = service;
 
     [HttpGet("{zipCode}")]
-    [ProducesResponseType(typeof(AdressDto), StatusCodes.Status200OK)]
-    public async Task<ActionResult<AdressDto>> Get([FromRoute] string zipCode, CancellationToken ct)
+    [ProducesResponseType(typeof(AdressResponse), StatusCodes.Status200OK)]
+    public async Task<ActionResult<AdressResponse>> Get([FromRoute] string zipCode, CancellationToken ct)
     {
         var cep = ZipCode.Create(zipCode);
 

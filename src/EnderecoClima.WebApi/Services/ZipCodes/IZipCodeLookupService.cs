@@ -1,4 +1,4 @@
-﻿using EnderecoClima.Infrastructure.Providers.BrasilApi.Dtos;
+﻿using EnderecoClima.Infrastructure.Dtos.Providers;
 
 namespace EnderecoClima.WebApi.Services.ZipCodes;
 

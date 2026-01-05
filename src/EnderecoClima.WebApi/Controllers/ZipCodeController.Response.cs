@@ -2,15 +2,15 @@
 
 public sealed partial class ZipCodesController
 {
-    public sealed record LocationDto(double Lat, double Lon);
+    public sealed record LocationResponse(double? Lat, double? Lon);
 
-    public sealed record AdressDto(
+    public sealed record AdressResponse(
       string ZipCode,
       string? Street,
       string? District,
       string? City,
       string? State,
       string? Ibge,
-      LocationDto? Location,
+      LocationResponse? Location,
       string Provider);
 }

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace EnderecoClima.Infrastructure.Providers.BrasilApi;
 
-namespace EnderecoClima.Infrastructure.Providers.BrasilApi;
-
-public sealed class BrasilApiOptions
+public sealed class BrasilApiCepOptions
 {
     public const string SectionName = "Providers:BrasilApi";
 
