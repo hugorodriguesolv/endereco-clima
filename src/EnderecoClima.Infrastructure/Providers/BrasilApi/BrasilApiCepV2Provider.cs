@@ -1,16 +1,15 @@
-﻿using EnderecoClima.Infrastructure.Extensions.Mapper;
+﻿using EnderecoClima.Infrastructure.Dtos.Providers;
 using EnderecoClima.Infrastructure.Interfaces.Providers;
-using EnderecoClima.Infrastructure.Providers.BrasilApi.Dtos;
 using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Net.Http.Json;
 
 namespace EnderecoClima.Infrastructure.Providers.BrasilApi;
 
-internal sealed class BrazilApiZipCodeProvider(HttpClient http, ILogger<BrazilApiZipCodeProvider> logger)
-  : IBrazilApiZipCodeProvider
+internal sealed class BrasilApiCepV2Provider(HttpClient http, ILogger<BrasilApiCepV2Provider> logger)
+  : IBrasilApiCepV2Provider
 {
-    public async Task<ZipCodeLookupDto?> TryGetAsync(string normalizedZipCode, CancellationToken ct)
+    public async Task<BrasilApiCepV2ResponseDto?> TryGetAsync(string normalizedZipCode, CancellationToken ct)
     {
         var path = $"api/cep/v2/{normalizedZipCode}";
 
@@ -34,6 +33,6 @@ internal sealed class BrazilApiZipCodeProvider(HttpClient http, ILogger<BrazilAp
 
         logger.LogInformation("BrasilAPI atendeu CEP {ZipCode}", normalizedZipCode);
 
-        return payload.Parser(normalizedZipCode);
+        return payload;
     }
 }
