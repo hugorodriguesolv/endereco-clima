@@ -16,28 +16,31 @@ public static class InfrastructureServiceExtensions
         // BrasilAPI
         services.AddOptions<BrasilApiCepOptions>()
           .Bind(configuration.GetSection(BrasilApiCepOptions.SectionName))
-          .Validate(o => Uri.TryCreate(o.BaseUrl, UriKind.Absolute, out _), "BrasilApi: BaseUrl inválida")
-          .Validate(o => o.TimeoutSeconds is >= 1 and <= 200, "BrasilApi: TimeoutSeconds deve estar entre 1 e 10");
+          .Validate(o => Uri.TryCreate(o.BaseUrl, UriKind.Absolute, out _), "BrasilApi: BaseUrl inválida");
 
         services.AddHttpClient<IBrasilApiCepV2Provider, BrasilApiCepV2Provider>((sp, http) =>
         {
-            var options = sp.GetRequiredService<IOptions<BrasilApiCepOptions>>().Value;
-            http.BaseAddress = new Uri(options.BaseUrl);
-            http.Timeout = TimeSpan.FromSeconds(options.TimeoutSeconds);
-        });
+            var opt = sp.GetRequiredService<IOptions<BrasilApiCepOptions>>().Value;
+            http.BaseAddress = new Uri(opt.BaseUrl);
+
+            // Timeout controlado pelo pipeline de resiliência
+            http.Timeout = Timeout.InfiniteTimeSpan;
+        })
+        .AddStandardResilienceHandler(configuration.GetSection("HttpResilience:BrasilApi"));
 
         // ViaCEP
         services.AddOptions<ViaCepOptions>()
           .Bind(configuration.GetSection(ViaCepOptions.SectionName))
-          .Validate(o => Uri.TryCreate(o.BaseUrl, UriKind.Absolute, out _), "ViaCep: BaseUrl inválida")
-          .Validate(o => o.TimeoutSeconds is >= 1 and <= 200, "ViaCep: TimeoutSeconds deve estar entre 1 e 10");
+          .Validate(o => Uri.TryCreate(o.BaseUrl, UriKind.Absolute, out _), "ViaCep: BaseUrl inválida");
 
         services.AddHttpClient<IViaCepProvider, ViaCepProvider>((sp, http) =>
         {
-            var options = sp.GetRequiredService<IOptions<ViaCepOptions>>().Value;
-            http.BaseAddress = new Uri(options.BaseUrl);
-            http.Timeout = TimeSpan.FromSeconds(options.TimeoutSeconds);
-        });
+            var opt = sp.GetRequiredService<IOptions<ViaCepOptions>>().Value;
+            http.BaseAddress = new Uri(opt.BaseUrl);
+
+            http.Timeout = Timeout.InfiniteTimeSpan;
+        })
+        .AddStandardResilienceHandler(configuration.GetSection("HttpResilience:ViaCep"));
 
         return services;
     }

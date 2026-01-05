@@ -21,6 +21,13 @@ internal sealed class BrasilApiCepV2Provider(HttpClient http, ILogger<BrasilApiC
             return null;
         }
 
+        if (response.StatusCode is HttpStatusCode.BadRequest)
+        {
+            var body = await response.Content.ReadAsStringAsync(ct);
+            logger.LogInformation("BrasilAPI: CEP inválido. Body={Body}", body);
+            throw new ArgumentException("CEP inválido. Informe 8 dígitos (com ou sem hífen).", "zipCode");
+        }
+
         if (!response.IsSuccessStatusCode)
         {
             var body = await response.Content.ReadAsStringAsync(ct);
@@ -29,7 +36,7 @@ internal sealed class BrasilApiCepV2Provider(HttpClient http, ILogger<BrasilApiC
         }
 
         var payload = await response.Content.ReadFromJsonAsync<BrasilApiCepV2ResponseDto>(cancellationToken: ct)
-            ?? throw new HttpRequestException("BrasilAPI retornou payload vazio.");
+            ?? throw new KeyNotFoundException("BrasilAPI retornou payload vazio.");
 
         logger.LogInformation("BrasilAPI atendeu CEP {ZipCode}", normalizedZipCode);
 
