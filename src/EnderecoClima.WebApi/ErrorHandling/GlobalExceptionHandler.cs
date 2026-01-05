@@ -31,7 +31,7 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
             HttpRequestException ex => (StatusCodes.Status503ServiceUnavailable, "upstream-unavailable", "Service unavailable", ex.Message),
 
             // 500 - erro inesperado
-            _ => (StatusCodes.Status500InternalServerError, "server-error", "Server error", "An unexpected error occurred.")
+            _ => (StatusCodes.Status500InternalServerError, "server-error", "Server error", $"An unexpected error occurred.")
         };
 
         httpContext.Response.StatusCode = status;

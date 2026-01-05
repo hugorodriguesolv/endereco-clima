@@ -18,10 +18,9 @@ public sealed class ZipCodeLookupService(
             if (brasil is not null)
                 return brasil.ToZipCodeLookup();
         }
-        catch (Exception ex) when (!ct.IsCancellationRequested)
+        catch (Exception ex) when (ex is not ArgumentException && !ct.IsCancellationRequested)
         {
-            // timeout
-            // falha transitória já tratada pelo HttpResilience
+            // timeout / falha transitória já tratada pelo HttpResilience
             logger.LogWarning(ex, "Falha ao consultar BrasilAPI para CEP {ZipCode}. Tentando ViaCEP.", zipCode8Digits);
         }
 
