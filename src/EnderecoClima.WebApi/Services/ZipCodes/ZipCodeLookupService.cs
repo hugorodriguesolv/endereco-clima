@@ -6,16 +6,31 @@ namespace EnderecoClima.WebApi.Services.ZipCodes;
 
 public sealed class ZipCodeLookupService(
     IBrasilApiCepV2Provider brasilApiCepV2Provider,
-    IViaCepProvider viaCepProvider) : IZipCodeLookupService
+    IViaCepProvider viaCepProvider,
+    ILogger<ZipCodeLookupService> logger) : IZipCodeLookupService
 {
     public async Task<ZipCodeLookupDto> LookupAsync(string zipCode8Digits, CancellationToken ct)
     {
-        //var resultBrasilApi = await brasilApiCepV2Provider.TryGetAsync(zipCode8Digits, ct);
-        //if (resultBrasilApi is null) throw new KeyNotFoundException($"CEP {zipCode8Digits} não encontrado.");
+        // Tenta BrasilAPI (primário)
+        try
+        {
+            var brasil = await brasilApiCepV2Provider.TryGetAsync(zipCode8Digits, ct);
+            if (brasil is not null)
+                return brasil.ToZipCodeLookup();
+        }
+        catch (Exception ex) when (!ct.IsCancellationRequested)
+        {
+            // timeout
+            // falha transitória já tratada pelo HttpResilience
+            logger.LogWarning(ex, "Falha ao consultar BrasilAPI para CEP {ZipCode}. Tentando ViaCEP.", zipCode8Digits);
+        }
 
-        var resultViaCep = await viaCepProvider.TryGetAsync(zipCode8Digits, ct);
-        if (resultViaCep is null) throw new KeyNotFoundException($"CEP {zipCode8Digits} não encontrado.");
+        // Fallback ViaCEP
+        var via = await viaCepProvider.TryGetAsync(zipCode8Digits, ct);
+        if (via is not null)
+            return via.ToZipCodeLookup();
 
-        return resultViaCep.ToZipCodeLookup();
+        // Falha geral
+        throw new KeyNotFoundException($"CEP {zipCode8Digits} não encontrado.");
     }
 }
